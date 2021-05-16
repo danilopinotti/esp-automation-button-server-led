@@ -1,11 +1,15 @@
+#ifdef ESP8266
 #include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 #include <PubSubClient.h>
 
 #define BROKER_ADDRESS "broker.hivemq.com"
 #define BROKER_USERNAME ""
 #define BROKER_PASSWORD ""
-#define BROKER_CLIENT_ID "btkSrv"
+#define BROKER_CLIENT_ID "btkSrvClient"
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(BROKER_ADDRESS, 1883, wifiClient);

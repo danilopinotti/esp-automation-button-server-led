@@ -1,11 +1,15 @@
+#ifdef ESP8266
 #include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 #include <PubSubClient.h>
 
 #define BROKER_ADDRESS "broker.hivemq.com"
 #define BROKER_USERNAME ""
 #define BROKER_PASSWORD ""
-#define BROKER_CLIENT_ID "btkLight1Client"
+#define BROKER_CLIENT_ID "btkLightDirect1Client"
 
 #define LED_PIN LED_BUILTIN
 
