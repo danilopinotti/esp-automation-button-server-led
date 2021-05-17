@@ -12,9 +12,13 @@
 #define BROKER_CLIENT_ID "btkBtn1Client"
 
 #define BUTTON_PIN 5 // D1 no esp8266
-#define STATUS_LED_PIN LED_BUILTIN
+#define STATUS_LED_PIN 2
 
 #define BUTTON_STATUS_TOPIC "btk/interruptores/idBtn1/status"
+
+#define HEALTHCHECK_INTERVAL 10000
+#define HEALTHCHECK_TOPIC "btk/interruptores/idBtn1/health"
+long lastHealthCheck = 0;
 
 boolean isButtonOn = false;
 
@@ -61,7 +65,7 @@ void handleButtonPress() {
     delay(100);
     if (digitalRead(BUTTON_PIN) == true) {
       Serial.println("Button Pressed");
-      
+
       isButtonOn = !isButtonOn;
       while (digitalRead(BUTTON_PIN) == true) {
         delay(50);
@@ -81,6 +85,11 @@ void propagateButtonStatus() {
 
 void loop()
 {
+  if ((lastHealthCheck + HEALTHCHECK_INTERVAL) < millis()) {
+    mqttClient.publish(HEALTHCHECK_TOPIC, "1");
+    lastHealthCheck = millis();
+  }
+
   handleButtonPress();
 
   digitalWrite(STATUS_LED_PIN, isButtonOn);
